@@ -1,0 +1,30 @@
+18/04/2019
+    * Javadoc / review
+    * Tests
+    * REST layer work with DTOs; (OK)
+    * Script to create schema at once; (OK)
+    * Improve README (OK)
+12/04/2019
+1. REST controller for board operations
+    * retrieve board with lists and cards (OK)
+        * GET /boards/a4f09660-5bf0-11e9-85f8-d3ceb2f2afbb
+    * add card list to a board
+        * POST /boards/a4f09660-5bf0-11e9-85f8-d3ceb2f2afbb/lists
+    * add card to a list of a board
+        * POST /boards/a4f09660-5bf0-11e9-85f8-d3ceb2f2afbb/lists/ea28d194-5bf4-11e9-8647-d663bd873d93/cards
+
+    * Some examples of good practices:
+        * https://hackernoon.com/restful-api-designing-guidelines-the-best-practices-60e1d954e7c9
+        * POST method requests the server to create a resource in the database, mostly when a web form is submitted.
+            E.g /companies/3/employees creates a new Employee of company 3.
+            POST is non-idempotent which means multiple requests will have different effects.
+        * PUT method requests the server to update resource or create the resource, if it doesn’t exist.
+            E.g. /companies/3/employees/john will request the server to update, or create if doesn’t exist,
+            the john resource in employees collection under company 3.
+---
+11/04/2019
+1. Create the domain model; (OK)
+    1.1. use UUID for IDs; (OK)
+    1.2. Review Cassandra primary keys and clustering keys (OK)
+2. Create the Cassandra schema file; (OK)
+3. PostConstruct that persists data; (OK)

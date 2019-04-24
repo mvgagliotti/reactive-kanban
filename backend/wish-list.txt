@@ -1,0 +1,6 @@
+1. Global Error handling
+2. Aspect to set ids with UUIDs.timeBased
+3. Complete javadocs on all public classes and methods
+4. Unit and Integration tests
+5. Schema creation and dummy data population
+6. Security

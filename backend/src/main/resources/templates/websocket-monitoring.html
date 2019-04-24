@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WebSocket Monitoring</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/websocket-monitoring.js"></script>
+</head>
+<body>
+<div id="main-content" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <table th:id="${id}" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Websocket subscription for board <span th:text="${id}">BLABLABLA</span>
+                            <button id="start" class="btn btn-default" onclick="connectAndSubscribe()">Start</button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="userinfo">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

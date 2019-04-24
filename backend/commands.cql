@@ -1,0 +1,38 @@
+--DROP TABLE board;
+--DROP TABLE card_list;
+--DROP TABLE card;
+--
+--select * from BOARD
+--
+--/* Boards */
+--
+--
+--
+--3cde9113-e831-47b5-8b0a-437ba6b605cd
+--6dfa62c3-81fc-4694-976c-7c8fcde6f570
+--8674328f-7ee1-450e-8648-281b93f999dc
+--/**
+-- * My Cool Board
+-- *
+-- * Backlog | On-Going | Done
+-- *
+-- * Card1      Card3     Card4
+-- * Card2
+-- *
+-- */
+--INSERT INTO board(id,description) VALUES(a4f09660-5bf0-11e9-85f8-d3ceb2f2afbb, 'My Cool Board')
+--INSERT INTO card_list(id, board_id, title, list_order) values(ea28d194-5bf4-11e9-8647-d663bd873d93, a4f09660-5bf0-11e9-85f8-d3ceb2f2afbb, 'Backlog', 1)
+--INSERT INTO card_list(id, board_id, title, list_order) values(1c8f6a94-5bf5-11e9-8647-d663bd873d93, a4f09660-5bf0-11e9-85f8-d3ceb2f2afbb, 'On-Going', 2)
+--INSERT INTO card_list(id, board_id, title, list_order) values(23df8b30-5bf5-11e9-8647-d663bd873d93, a4f09660-5bf0-11e9-85f8-d3ceb2f2afbb, 'Done', 3)
+--
+--INSERT INTO card(id, card_list_id, title, card_order) values (54a7f022-5bf5-11e9-8647-d663bd873d93, ea28d194-5bf4-11e9-8647-d663bd873d93, 'Card 1', 1)
+--INSERT INTO card(id, card_list_id, title, card_order) values (7cb49d36-5bf5-11e9-8647-d663bd873d93, ea28d194-5bf4-11e9-8647-d663bd873d93, 'Card 2', 2)
+--
+--INSERT INTO card(id, card_list_id, title, card_order) values (54a7f022-5bf5-11e9-8647-d663bd873d93, 1c8f6a94-5bf5-11e9-8647-d663bd873d93, 'Card 3', 1)
+--INSERT INTO card(id, card_list_id, title, card_order) values (7cb49d36-5bf5-11e9-8647-d663bd873d93, 23df8b30-5bf5-11e9-8647-d663bd873d93, 'Card 4', 2)
+--
+--SELECT * FROM card_list WHERE
+--board_id = a4f09660-5bf0-11e9-85f8-d3ceb2f2afbb
+--
+--select * from board where id in (a4f09660-5bf0-11e9-85f8-d3ceb2f2afbb, 7e6aadf1-5bf0-11e9-85f8-d3ceb2f2afbb)
+--select * from card_list where board_id = a4f09660-5bf0-11e9-85f8-d3ceb2f2afbb and id = a4f09660-5bf0-11e9-85f8-d3ceb2f2afbb
