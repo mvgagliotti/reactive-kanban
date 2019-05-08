@@ -20,11 +20,12 @@ public class CardListTest {
     public void testModifyingOrder() {
 
         Card card1, card2, card3;
+        UUID listId = UUID.randomUUID();
 
         List<Card> cards = Arrays.asList(
-                card1 = card().description("card_1").cardOrder(1).build(),
-                card2 = card().description("card_2").cardOrder(2).build(),
-                card3 = card().description("card_3").cardOrder(3).build());
+                card1 = card(listId).description("card_1").cardOrder(1).build(),
+                card2 = card(listId).description("card_2").cardOrder(2).build(),
+                card3 = card(listId).description("card_3").cardOrder(3).build());
 
         //changing first card to second position
         CardDTO cardDTO = CardDTO.builder()
@@ -46,8 +47,8 @@ public class CardListTest {
 
     }
 
-    private Card.CardBuilder card() {
-        return Card.builder().id(UUID.randomUUID());
+    private Card.CardBuilder card(UUID listId) {
+        return Card.builder().id(UUID.randomUUID()).cardListId(listId);
     }
 
 }

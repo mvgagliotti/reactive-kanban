@@ -1,8 +1,6 @@
 package br.com.mvgc.reactivekanban.controller;
 
-import br.com.mvgc.reactivekanban.dto.BoardDTO;
-import br.com.mvgc.reactivekanban.dto.CardDTO;
-import br.com.mvgc.reactivekanban.dto.CardListDTO;
+import br.com.mvgc.reactivekanban.dto.*;
 import br.com.mvgc.reactivekanban.service.BoardService;
 import br.com.mvgc.reactivekanban.service.CardListService;
 import br.com.mvgc.reactivekanban.service.CardService;
@@ -28,6 +26,14 @@ public class BoardController {
     @Autowired
     private CardService cardService;
 
+    @PostMapping(value = "/{boardId}/move", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<ResponseEntity<CardMoveResultDTO>> moveCards(@PathVariable("boardId") UUID boardId,
+                                                             @RequestBody CardMoveDTO cardMoveDTO) {
+        return boardService
+                .moveCards(boardId, cardMoveDTO)
+                .map(result -> ResponseEntity.ok(result));
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<BoardDTO>> saveBoard(@RequestBody BoardDTO board) {
         return boardService
@@ -46,8 +52,8 @@ public class BoardController {
 
     @PostMapping(value = "/{boardId}/lists/{listId}/cards", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<List<CardDTO>>> saveNewCard(@PathVariable("boardId") UUID boardId,
-                                                        @PathVariable("listId") UUID listId,
-                                                        @RequestBody CardDTO cardDTO) {
+                                                           @PathVariable("listId") UUID listId,
+                                                           @RequestBody CardDTO cardDTO) {
         return cardService
                 .save(boardId, listId, cardDTO)
                 .map(x -> ResponseEntity.ok(x));

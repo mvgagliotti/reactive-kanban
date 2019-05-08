@@ -5,6 +5,7 @@ import br.com.mvgc.reactivekanban.utils.ListUtils;
 import com.google.common.base.Preconditions;
 import lombok.*;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
+import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
 
@@ -14,7 +15,6 @@ import static br.com.mvgc.reactivekanban.utils.ListUtils.*;
 
 /**
  * A kanban card
- *
  */
 @Table
 @Data
@@ -24,7 +24,7 @@ import static br.com.mvgc.reactivekanban.utils.ListUtils.*;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Card implements Comparable<Card> {
 
-    @PrimaryKeyColumn (ordinal = 2, type = PrimaryKeyType.CLUSTERED)
+    @PrimaryKeyColumn(ordinal = 2, type = PrimaryKeyType.CLUSTERED)
     private UUID id;
 
     @PrimaryKeyColumn(name = "card_list_id", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
@@ -35,13 +35,18 @@ public class Card implements Comparable<Card> {
 
     private String description;
 
-    @PrimaryKeyColumn(name = "card_order", ordinal = 1, type = PrimaryKeyType.CLUSTERED)
+    @Column("card_order")
     @EqualsAndHashCode.Include
-    private Integer cardOrder=0;
+    private Integer cardOrder = 0;
+
+
+    private static final Comparator<Card> CARD_COMPARATOR = Comparator
+            .comparing(Card::getCardListId)
+            .thenComparing(Card::getCardOrder);
 
     @Override
     public int compareTo(Card o) {
-        return this.getCardOrder().compareTo(o.getCardOrder());
+        return CARD_COMPARATOR.compare(this, o);
     }
 
     /**
@@ -50,34 +55,48 @@ public class Card implements Comparable<Card> {
      * @return
      */
     public static Collection<Card> updateCardsOrder(final List<Card> cards, final CardDTO updatedCardDTO) {
+        return updateCardsOrder(cards, updatedCardDTO.getId(), updatedCardDTO.getOrder());
+    }
+
+    /**
+     * @param cards
+     * @param cardId
+     * @param cardOrder
+     * @return
+     */
+    public static Collection<Card> updateCardsOrder(final List<Card> cards, final UUID cardId, final Integer cardOrder) {
 
         //TODO: validate order inside bounds of cards length
 
-        Preconditions.checkNotNull(updatedCardDTO.getId(), "updatedCardOptional must have an id");
-        Preconditions.checkNotNull(updatedCardDTO.getOrder(), "updatedCardOptional must have an order");
+        Preconditions.checkNotNull(cardId, "updatedCardOptional must have an id");
+        Preconditions.checkNotNull(cardOrder, "updatedCardOptional must have an order");
 
         Optional<Card> updatedCardOptional =
                 cards.stream()
-                        .filter(x -> updatedCardDTO.getId().equals(x.getId()))
+                        .filter(x -> cardId.equals(x.getId()))
                         .findFirst();
-        Preconditions.checkArgument(updatedCardOptional.isPresent(), String.format("Card with id %s not found on list cards", updatedCardDTO.getId()));
+        Preconditions.checkArgument(updatedCardOptional.isPresent(), String.format("Card with id %s not found on list cards", cardId));
 
 
         Card updatedCard = updatedCardOptional.get();
-        if (updatedCard.getCardOrder() == updatedCardDTO.getOrder()) {
+        if (updatedCard.getCardOrder() == cardOrder) {
             return Collections.emptyList();
         }
 
         Collections.sort(cards);
-        Collection<Card> modifiedCards = changePosition(cards, updatedCard.getCardOrder() - 1,updatedCardDTO.getOrder() - 1);
+        Collection<Card> modifiedCards = changePosition(cards, updatedCard.getCardOrder() - 1, cardOrder - 1);
         updateOrderByIndex(cards);
 
         return modifiedCards;
     }
 
-    private static void updateOrderByIndex(List<Card> cards) {
-        for (int index=0; index<cards.size(); index++) {
-            cards.get(index).setCardOrder(index+1);
+
+    /**
+     * @param cards
+     */
+    public static void updateOrderByIndex(List<Card> cards) {
+        for (int index = 0; index < cards.size(); index++) {
+            cards.get(index).setCardOrder(index + 1);
         }
     }
 

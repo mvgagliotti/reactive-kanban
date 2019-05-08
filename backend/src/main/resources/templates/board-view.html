@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Board View</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/board-view-improved.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/board-view.js"></script>
+    <script src="/templates.js"></script>
+    <script src="/modal-component.js"></script>
+
+</head>
+<body>
+
+<div class="container-fluid">
+
+    <table th:id="${id}" class="table table-striped">
+        <thead>
+        <tr>
+            <th>
+                Board <span id="board-id" th:text="${id}">BLABLABLA</span>
+                <button id="start" class="btn btn-default" onclick="addCardList('123', 'New List BLABLABLA')">Add a list</button>
+                <button id="start" class="btn btn-default" onclick="testListUpdate()">Test List Update</button>
+                <button id="start" class="btn btn-default" onclick="addCard()">Test adding card</button>
+                <button id="start" class="btn btn-default" onclick="execModal()">Modal Test</button>
+            </th>
+        </tr>
+        </thead>
+        <tbody id="userinfo">
+        </tbody>
+    </table>
+
+
+    <div id="board-area" class="row">
+
+    </div>
+</div>
+
+<!-- *****************************************Modals********************************************** -->
+<div id="dynamic-modal-area">
+
+</div>
+
+<div id="modal-area">
+    <!-- Static Modal -->
+    <div class="modal modal-static fade" id="processing-modal" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="fa fa-refresh fa-5x fa-spin"></i>
+                        <h4>Processing...</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading modal -->
+    <div class="modal modal-static fade" id="loading-modal" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="fa fa-refresh fa-5x fa-spin"></i>
+                        <h4>Loading...</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="my-form-modal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        Modal title
+                    </h4>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary">
+                        Save <changes></changes>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

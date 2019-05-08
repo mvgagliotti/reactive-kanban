@@ -63,6 +63,7 @@ public class CardService {
         //card update
         Mono<List<CardDTO>> resultMono = cardRepository
                 .findByCardListIds(Arrays.asList(listId))
+                .filter(x -> x.getCardOrder() > 0)
                 .collectList()
                 .flatMap(cards -> {
                     Collection<Card> updated = Card.updateCardsOrder(cards, cardDTO);
@@ -79,10 +80,13 @@ public class CardService {
 
     }
 
-    private CardDTO toCardDTO(Card x) {
+    private CardDTO toCardDTO(Card card) {
         CardDTO resultDTO = new CardDTO();
-        //TODO: copy values
-        resultDTO.setId(x.getId());
+        resultDTO.setId(card.getId());
+        resultDTO.setCardListId(card.getCardListId());
+        resultDTO.setTitle(card.getTitle());
+        resultDTO.setOrder(card.getCardOrder());
+        resultDTO.setDescription(card.getDescription());
         return resultDTO;
     }
 }
